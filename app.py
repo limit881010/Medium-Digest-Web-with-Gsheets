@@ -4,10 +4,10 @@ import streamlit as st
 import pandas as pd
 from gsheets_io import read_sheet_to_df, get_or_create_worksheet, upsert_read_status
 
-st.set_page_config(page_title="Medium Digest-Web（Google Sheets 版）", layout="wide")
+st.set_page_config(page_title="Medium Digest-Web", layout="wide")
 
 # ======== 必填 ========
-SHEET_ID = "1oD71h5aGl6G-QxWHcq8lnqKZTIPKlSEyK_wPVLXrgkI"
+SHEET_ID = "1ams3xdaxMB_iAEpbAK0CT3yZwv9ME-5jZINiiXN0p7Q"
 DATA_SHEET_NAME = "Articles"
 READ_SHEET_NAME = "ReadStatus"
 REQUIRED_COLS = ['Date', 'Author', 'Title', 'Subtitle', 'URL', 'Category (20-class)']
@@ -253,3 +253,4 @@ if search_term:
         st.info("無符合搜尋結果。")
 else:
     display_paginated_articles(filtered_df)
+
