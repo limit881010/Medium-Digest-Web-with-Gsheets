@@ -115,7 +115,7 @@ def display_paginated_articles(df):
     st.write(f"頁碼: {st.session_state.page + 1} / {total_pages}")
 
 # ======== 主內容 ========
-st.title("Medium Digest-Web（Google Sheets 版）")
+st.title("Medium Digest-Web")
 
 df = load_articles()
 if df is None:
@@ -253,4 +253,5 @@ if search_term:
         st.info("無符合搜尋結果。")
 else:
     display_paginated_articles(filtered_df)
+
 
