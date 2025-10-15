@@ -10,7 +10,7 @@ st.set_page_config(page_title="Medium Digest-Web", layout="wide")
 SHEET_ID = "1ams3xdaxMB_iAEpbAK0CT3yZwv9ME-5jZINiiXN0p7Q"
 DATA_SHEET_NAME = "Articles"
 READ_SHEET_NAME = "ReadStatus"
-REQUIRED_COLS = ['Date', 'Author', 'Title', 'Subtitle', 'URL', 'Category (20-class)']
+REQUIRED_COLS = ['Date', 'Author', 'Title', 'Subtitle', 'URL', 'Category (20-class)' 'SID']
 
 # ======== 即時寫入的短延遲（防連點） ========
 DEBOUNCE_MS = 300  # 建議 200~500ms
@@ -77,15 +77,16 @@ def display_paginated_articles(df):
         title_html = f"<font size=5>♦ <b>{row['Title']}</b></font>"
         subtitle_html = f"{row['Subtitle']}" if pd.notna(row['Subtitle']) else ""
         date_str = row['Date'].strftime('%Y-%m-%d') if pd.notna(row['Date']) else 'N/A'
+        SID_str = f"SID: {row['SID']}" 
         link_html = (
-            f"{row['Author']},  {date_str}, "
+            f"{row['Author']},  {date_str}"
             f"<a href='{row['URL']}' target='_blank' style='margin-right:15px'>🔗全文連結</a>"
             f"<a href='https://freedium.cfd/{row['URL']}' target='_blank'>🔗破解連結</a>"
         )
 
         st.markdown(f"<div class='{wrapper_class}'>{title_html}</div>", unsafe_allow_html=True)
         if subtitle_html:
-            st.markdown(f"<div class='{wrapper_class}'>{subtitle_html}</div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='{wrapper_class}'>{subtitle_html}, {SID_str}</div>", unsafe_allow_html=True)
         st.markdown(f"<div class='{wrapper_class}'>{link_html}</div>", unsafe_allow_html=True)
 
         # 單一 checkbox 控制「已報告」
@@ -97,7 +98,7 @@ def display_paginated_articles(df):
             key=chk_key,
             on_change=on_toggle,
             args=(chk_key, row["ItemKey"]),
-            help="切換後自動儲存（含 0.3 秒防連點）"
+            #help="切換後自動儲存（含 0.3 秒防連點）"
         )
 
         st.markdown("---")
@@ -243,7 +244,8 @@ filtered_df = filtered_df.sort_values("Date", ascending=False)
 if search_term:
     mask = (
         filtered_df["Title"].astype(str).str.contains(search_term, case=False, na=False)
-        | filtered_df["Subtitle"].astype(str).str.contains(search_term, case=False, na=False)
+        | filtered_df["Subtitle"].astype(str).str.contains(search_term, case=False, na=False) 
+        | filtered_df["SID"].astype(str).str.contains(search_term, case=False, na=False) 
     )
     search_df = filtered_df[mask]
     st.subheader(f"搜尋結果（共 {len(search_df)} 筆）")
@@ -253,5 +255,3 @@ if search_term:
         st.info("無符合搜尋結果。")
 else:
     display_paginated_articles(filtered_df)
-
-
