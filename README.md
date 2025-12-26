@@ -62,17 +62,12 @@ url = "您的 Google Sheet 網址或名稱"
 
 將您的 Service Account 資訊填入（以下為範例結構，請依據 gsheets_io.py 實際實作調整）：
 
-# app.py中
+#### app.py中
 ```
 SHEET_ID = "請更換為你的SHEET_ID"
 ```
 
 ### 4. 資料庫結構 (Google Sheets)
-請確保您的 Google Sheet 包含以下欄位（Header），以便程式正確讀寫： (請根據您實際的程式碼 app.py 或 gsheets_io.py 修改以下欄位名稱)
-
-
-
-###4. 資料庫結構 (Google Sheets)
 請確保您的 Google Sheet 包含以下欄位（Header），以便程式正確讀寫： (請根據您實際的程式碼 app.py 或 gsheets_io.py 修改以下欄位名稱)
 
 Title	URL	Category	Date	Summary
