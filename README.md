@@ -42,9 +42,9 @@ Streamlit 需要透過 secrets.toml 來讀取您的 Google Sheets 憑證。
 在專案根目錄下建立 .streamlit 資料夾。
 
 在該資料夾內建立 secrets.toml 檔案。
-# .streamlit/secrets.toml
+#### .streamlit/secrets.toml
 
-[gcp_service_account]
+```[gcp_service_account]
 type = "service_account"
 project_id = "您的專案ID"
 private_key_id = "您的私鑰ID"
@@ -55,7 +55,7 @@ auth_uri = "[https://accounts.google.com/o/oauth2/auth](https://accounts.google.
 token_uri = "[https://oauth2.googleapis.com/token](https://oauth2.googleapis.com/token)"
 auth_provider_x509_cert_url = "[https://www.googleapis.com/oauth2/v1/certs](https://www.googleapis.com/oauth2/v1/certs)"
 client_x509_cert_url = "您的憑證URL"
-
+```
 [spreadsheet]
 url = "您的 Google Sheet 網址或名稱"
 注意：請勿將 .streamlit/secrets.toml 上傳至 GitHub，以免洩露您的金鑰。
