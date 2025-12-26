@@ -79,3 +79,6 @@ Title	URL	Category	Date	Summary
 Bash
 streamlit run app.py
 ```
+<img width="1919" height="887" alt="image" src="https://github.com/user-attachments/assets/04a2718e-43aa-4f44-a602-9bb19f60450b" />
+
+# Enjoy it !!!🎉🎉🎉
