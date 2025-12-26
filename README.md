@@ -14,6 +14,13 @@
 * [Streamlit]
 * Google Sheets API
 
+## 📂 檔案結構
+app.py: Streamlit 應用程式的主入口，負責 UI 顯示與邏輯。
+
+gsheets_io.py: 負責與 Google Sheets API 進行串接與資料處理。
+
+requirements.txt: 專案所需的 Python 套件清單。
+
 ## 🚀 快速開始
 
 ### 1. 前置準備
@@ -79,6 +86,9 @@ Title	URL	Category	Date	Summary
 Bash
 streamlit run app.py
 ```
+瀏覽器應會自動開啟 http://localhost:8501。
+
+
 <img width="1919" height="887" alt="image" src="https://github.com/user-attachments/assets/04a2718e-43aa-4f44-a602-9bb19f60450b" />
 
 # Enjoy it !!!🎉🎉🎉
