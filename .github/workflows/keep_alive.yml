@@ -1,0 +1,52 @@
+name: Wake up Streamlit App
+
+on:
+  schedule:
+    # 這代表每 6 小時執行一次 (UTC 時間)
+    # 你可以根據需要調整頻率
+    - cron: '0 */8 * * *' 
+  workflow_dispatch: # 這行很重要，讓你可以手動按按鈕測試
+
+jobs:
+  wake-up:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Playwright
+        run: npm install playwright
+
+      - name: Run Wake-up Script
+        run: |
+          node -e "
+          const { chromium } = require('playwright');
+          (async () => {
+            const browser = await chromium.launch();
+            const page = await browser.newPage();
+            // 替換成你的實際 Streamlit 網址
+            const url = 'https://medium-digest-web-with-gsheets-r4nynpfoybx2ju3jbw4rf7.streamlit.app/';
+            
+            console.log('正在訪問 App...');
+            await page.goto(url, { waitUntil: 'networkidle' });
+            await page.waitForTimeout(5000); 
+            
+            // 嘗試尋找喚醒按鈕 (Streamlit 預設文字)
+            const wakeupButton = page.getByRole('button', { name: /Yes, get this app back up/i });
+            
+            if (await wakeupButton.isVisible()) {
+                await wakeupButton.click();
+                console.log('偵測到休眠按鈕，已點擊喚醒！');
+                await page.waitForTimeout(10000); // 點擊後多待一會確保喚醒成功
+            } else {
+                console.log('App 已經是開啟狀態，收工！');
+            }
+            
+            await browser.close();
+          })();
+          "
