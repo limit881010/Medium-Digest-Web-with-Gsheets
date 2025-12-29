@@ -2,10 +2,8 @@ name: Wake up Streamlit App
 
 on:
   schedule:
-    # 這代表每 6 小時執行一次 (UTC 時間)
-    # 你可以根據需要調整頻率
     - cron: '0 */8 * * *' 
-  workflow_dispatch: # 這行很重要，讓你可以手動按按鈕測試
+  workflow_dispatch: 
 
 jobs:
   wake-up:
@@ -19,34 +17,40 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Playwright
-        run: npm install playwright
+      - name: Install Playwright & Dependencies
+        run: |
+          npm install playwright
+          npx playwright install --with-deps chromium
 
       - name: Run Wake-up Script
         run: |
           node -e "
           const { chromium } = require('playwright');
           (async () => {
-            const browser = await chromium.launch();
+            const browser = await chromium.launch({ headless: true });
             const page = await browser.newPage();
-            // 替換成你的實際 Streamlit 網址
             const url = 'https://medium-digest-web-with-gsheets-r4nynpfoybx2ju3jbw4rf7.streamlit.app/';
             
-            console.log('正在訪問 App...');
-            await page.goto(url, { waitUntil: 'networkidle' });
-            await page.waitForTimeout(5000); 
-            
-            // 嘗試尋找喚醒按鈕 (Streamlit 預設文字)
-            const wakeupButton = page.getByRole('button', { name: /Yes, get this app back up/i });
-            
-            if (await wakeupButton.isVisible()) {
-                await wakeupButton.click();
-                console.log('偵測到休眠按鈕，已點擊喚醒！');
-                await page.waitForTimeout(10000); // 點擊後多待一會確保喚醒成功
-            } else {
-                console.log('App 已經是開啟狀態，收工！');
+            try {
+              console.log('正在訪問 App...');
+              // 增加超時時間到 60 秒，因為喚醒休眠的 App 比較慢
+              await page.goto(url, { waitUntil: 'networkidle', timeout: 60000 });
+              await page.waitForTimeout(10000); 
+              
+              const wakeupButton = page.getByRole('button', { name: /Yes, get this app back up/i });
+              
+              if (await wakeupButton.isVisible()) {
+                  await wakeupButton.click();
+                  console.log('偵測到休眠按鈕，已點擊喚醒！');
+                  await page.waitForTimeout(15000); 
+              } else {
+                  console.log('App 已經是開啟狀態，或是已經成功喚醒。');
+              }
+            } catch (error) {
+              console.error('執行過程中發生錯誤:', error.message);
+              process.exit(1);
+            } finally {
+              await browser.close();
             }
-            
-            await browser.close();
           })();
           "
