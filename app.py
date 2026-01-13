@@ -81,7 +81,7 @@ def display_paginated_articles(df):
         link_html = (
             f"{row['Author']},  {date_str}"
             f"<a href='{row['URL']}' target='_blank' style='margin-right:15px'>🔗全文連結</a>"
-            f"<a href='https://freedium.cfd/{row['URL']}' target='_blank'>🔗破解連結</a>"
+            f"<a href='https://freedium-mirror.cfd/{row['URL']}' target='_blank'>🔗破解連結</a>"
         )
 
         st.markdown(f"<div class='{wrapper_class}'>{title_html}</div>", unsafe_allow_html=True)
@@ -255,3 +255,4 @@ if search_term:
         st.info("無符合搜尋結果。")
 else:
     display_paginated_articles(filtered_df)
+
